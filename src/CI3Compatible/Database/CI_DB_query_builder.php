@@ -29,6 +29,9 @@ class CI_DB_query_builder extends CI_DB_driver
     private $where = [];
 
     /** @var array */
+    private $whereIn = [];
+
+    /** @var array */
     private $order_by = [];
 
     /** @var array */
@@ -221,6 +224,26 @@ class CI_DB_query_builder extends CI_DB_driver
         return $this;
     }
 
+
+    /**
+     * WHERE
+     *
+     * Generates the WHERE_IN portion of the query.
+     * Separates multiple calls with 'AND'.
+     *
+     * @param   mixed
+     * @param   mixed
+     * @param   bool
+     *
+     * @return  CI_DB_query_builder
+     */
+    public function where_in($key, $value = null, $escape = null): self
+    {
+        $this->whereIn[] = [$key, $value, $escape];
+
+        return $this;
+    }
+
     /**
      * JOIN
      *
@@ -273,6 +296,7 @@ class CI_DB_query_builder extends CI_DB_driver
 
         $this->execJoin();
         $this->execWhere();
+        $this->execWhereIn();
         $this->execLike();
 
         foreach ($this->order_by as $params) {
@@ -287,6 +311,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->execSet();
         $this->execJoin();
         $this->execWhere();
+        $this->execWhereIn();
         $this->execLike();
     }
 
@@ -459,6 +484,7 @@ class CI_DB_query_builder extends CI_DB_driver
     {
         $this->existsBuilder();
         $this->execWhere();
+        $this->execWhereIn();
         $this->execLike();
     }
 
@@ -487,6 +513,13 @@ class CI_DB_query_builder extends CI_DB_driver
     {
         foreach ($this->where as $params) {
             $this->builder->where(...$params);
+        }
+    }
+
+    private function execWhereIn(): void
+    {
+        foreach ($this->whereIn as $params) {
+            $this->builder->whereIn(...$params);
         }
     }
 
