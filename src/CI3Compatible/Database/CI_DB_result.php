@@ -58,6 +58,16 @@ class CI_DB_result
     }
 
     /**
+     * Returns a single result row - object
+     *
+     * @return    array|null
+     */
+    public function row_object(int $n = 0)
+    {
+        return $this->result->getRowObject($n);
+    }
+
+    /**
      * Row
      *
      * A wrapper method.
