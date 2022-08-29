@@ -48,6 +48,16 @@ class CI_DB_result
     }
 
     /**
+     * Query result. "array" version.
+     *
+     * @return    array
+     */
+    public function result_object(): array
+    {
+        return $this->result->getResultObject();
+    }
+
+    /**
      * Returns a single result row - array version
      *
      * @return    array|null
