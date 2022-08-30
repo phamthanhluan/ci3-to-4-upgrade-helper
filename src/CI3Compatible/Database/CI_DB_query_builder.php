@@ -282,6 +282,10 @@ class CI_DB_query_builder extends CI_DB_driver
         return $this;
     }
 
+    private function group_by($field) {
+        $this->builder->groupBy($field);
+    }
+
     private function prepareSelectQuery(): void
     {
         $this->existsBuilder();
