@@ -295,9 +295,7 @@ class CI_DB_query_builder extends CI_DB_driver
     {
         $this->existsBuilder();
 
-        if($this->isDistinct) {
-            $this->builder->distinct();
-        }
+
         foreach ($this->select as $params) {
             $this->builder->select(...$params);
         }
@@ -310,7 +308,9 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->execWhere();
         $this->execWhereIn();
         $this->execLike();
-
+        if($this->isDistinct) {
+            $this->builder->distinct();
+        }
         foreach ($this->order_by as $params) {
             $this->builder->orderBy(...$params);
         }
