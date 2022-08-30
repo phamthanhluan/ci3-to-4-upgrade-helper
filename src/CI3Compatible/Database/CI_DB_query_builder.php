@@ -52,6 +52,8 @@ class CI_DB_query_builder extends CI_DB_driver
     /** @var array */
     private $select_sum = [];
 
+    private $isDistinct = false;
+
     /**
      * Get
      *
@@ -286,13 +288,16 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->builder->groupBy($field);
     }
     public function distinct() {
-        $this->builder->distinct();
+        $this->isDistinct = true;
     }
 
     private function prepareSelectQuery(): void
     {
         $this->existsBuilder();
 
+        if($this->isDistinct) {
+            $this->builder->distinct();
+        }
         foreach ($this->select as $params) {
             $this->builder->select(...$params);
         }
