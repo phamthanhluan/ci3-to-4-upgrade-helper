@@ -286,7 +286,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->builder->groupBy($field);
     }
     public function distinct() {
-        $this->distinct();
+        $this->builder->distinct();
     }
 
     private function prepareSelectQuery(): void
