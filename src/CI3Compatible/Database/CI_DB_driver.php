@@ -21,6 +21,20 @@ use function is_bool;
 
 class CI_DB_driver
 {
+    /**
+     * ESCAPE statement string
+     *
+     * @var	string
+     */
+    protected $_like_escape_str = " ESCAPE '%s' ";
+
+    /**
+     * ESCAPE character
+     *
+     * @var	string
+     */
+    protected $_like_escape_chr = '!';
+
     /** @var BaseConnection */
     protected $db;
 
@@ -180,5 +194,71 @@ class CI_DB_driver
     public function trans_off()
     {
         $this->db->transOff();
+    }
+
+    public function escape($str)
+    {
+        if (is_array($str))
+        {
+            $str = array_map(array(&$this, 'escape'), $str);
+            return $str;
+        }
+        elseif (is_string($str) OR (is_object($str) && method_exists($str, '__toString')))
+        {
+            return "'".$this->escape_str($str)."'";
+        }
+        elseif (is_bool($str))
+        {
+            return ($str === FALSE) ? 0 : 1;
+        }
+        elseif ($str === NULL)
+        {
+            return 'NULL';
+        }
+
+        return $str;
+    }
+    /**
+     * Escape String
+     *
+     * @param	string|string[]	$str	Input string
+     * @param	bool	$like	Whether or not the string will be used in a LIKE condition
+     * @return	string
+     */
+    public function escape_str($str, $like = FALSE)
+    {
+        if (is_array($str))
+        {
+            foreach ($str as $key => $val)
+            {
+                $str[$key] = $this->escape_str($val, $like);
+            }
+
+            return $str;
+        }
+
+        $str = $this->_escape_str($str);
+
+        // escape LIKE condition wildcards
+        if ($like === TRUE)
+        {
+            return str_replace(
+                array($this->_like_escape_chr, '%', '_'),
+                array($this->_like_escape_chr.$this->_like_escape_chr, $this->_like_escape_chr.'%', $this->_like_escape_chr.'_'),
+                $str
+            );
+        }
+
+        return $str;
+    }
+    /**
+     * Platform-dependant string escape
+     *
+     * @param	string
+     * @return	string
+     */
+    protected function _escape_str($str)
+    {
+        return str_replace("'", "''", remove_invisible_characters($str));
     }
 }
