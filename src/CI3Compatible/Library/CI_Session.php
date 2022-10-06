@@ -70,6 +70,10 @@ class CI_Session
         $this->session->set($data, $value);
     }
 
+    /**
+     * @param $data
+     * @param null $value
+     */
     public function set($data, $value = null)
     {
         $this->session->set($data, $value);
@@ -89,6 +93,10 @@ class CI_Session
         return $this->session->get($key);
     }
 
+    /**
+     * @param string|null $key
+     * @return mixed
+     */
     public function get(?string $key = null)
     {
         return $this->session->get($key);
@@ -132,6 +140,10 @@ class CI_Session
     {
         $this->session->remove($key);
     }
+
+    /**
+     * @param $key
+     */
     public function remove($key)
     {
         $this->session->remove($key);
@@ -153,6 +165,24 @@ class CI_Session
     }
 
     /**
+     * @param $data
+     * @param null $value
+     */
+    public function setFlashdata($data, $value = null)
+    {
+        $this->session->setFlashdata($data, $value);
+    }
+
+    /**
+     * @param string|null $key
+     */
+    public function markAsFlashdata(?string $key = null)
+    {
+        $this->session->markAsFlashdata($key);
+    }
+
+
+    /**
      * Flashdata (fetch)
      *
      * Legacy CI_Session compatibility method
@@ -162,6 +192,15 @@ class CI_Session
      * @return  mixed   Session data value or NULL if not found
      */
     public function flashdata(?string $key = null)
+    {
+        return $this->session->getFlashdata($key);
+    }
+
+    /**
+     * @param string|null $key
+     * @return mixed
+     */
+    public function getFlashdata(?string $key = null)
     {
         return $this->session->getFlashdata($key);
     }
