@@ -113,6 +113,10 @@ class CI_Form_validation
     {
         if (! empty($data)) {
             $this->validation_data = $data;
+            // CI4 doesn't recognize data from post form
+            if(isset($data['form'])) {
+                $this->validation_data = $data['form'];
+            }
         }
 
         return $this;
