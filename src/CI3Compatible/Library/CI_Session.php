@@ -70,6 +70,11 @@ class CI_Session
         $this->session->set($data, $value);
     }
 
+    public function set($data, $value = null)
+    {
+        $this->session->set($data, $value);
+    }
+
     /**
      * Userdata (fetch)
      *
@@ -80,6 +85,11 @@ class CI_Session
      * @return  mixed   Session data value or NULL if not found
      */
     public function userdata(?string $key = null)
+    {
+        return $this->session->get($key);
+    }
+
+    public function get(?string $key = null)
     {
         return $this->session->get($key);
     }
@@ -119,6 +129,10 @@ class CI_Session
      * @return  void
      */
     public function unset_userdata($key)
+    {
+        $this->session->remove($key);
+    }
+    public function remove($key)
     {
         $this->session->remove($key);
     }
