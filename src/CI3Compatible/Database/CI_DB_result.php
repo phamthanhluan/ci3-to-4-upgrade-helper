@@ -19,10 +19,12 @@ class CI_DB_result
 {
     /** @var ResultInterface */
     private $result;
+    public $num_rows;
 
     public function __construct(ResultInterface $result)
     {
         $this->result = $result;
+        $this->num_rows = $result->getNumRows();
     }
 
     /**
