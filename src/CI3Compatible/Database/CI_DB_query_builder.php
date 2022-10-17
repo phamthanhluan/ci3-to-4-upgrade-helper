@@ -32,9 +32,6 @@ class CI_DB_query_builder extends CI_DB_driver
     private $whereIn = [];
 
     /** @var array */
-    private $whereNotIn = [];
-
-    /** @var array */
     private $order_by = [];
 
     /** @var array */
@@ -249,13 +246,6 @@ class CI_DB_query_builder extends CI_DB_driver
         return $this;
     }
 
-    public function where_not_in($key, $value = null, $escape = null): self
-    {
-        $this->whereNotIn[] = [$key, $value, $escape];
-
-        return $this;
-    }
-
     /**
      * JOIN
      *
@@ -316,7 +306,6 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->execJoin();
         $this->execWhere();
         $this->execWhereIn();
-        $this->execWhereNotIn();
         $this->execLike();
 
         foreach ($this->order_by as $params) {
@@ -332,7 +321,6 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->execJoin();
         $this->execWhere();
         $this->execWhereIn();
-        $this->execWhereNotIn();
         $this->execLike();
     }
 
@@ -506,7 +494,6 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->existsBuilder();
         $this->execWhere();
         $this->execWhereIn();
-        $this->execWhereNotIn();
         $this->execLike();
     }
 
@@ -542,13 +529,6 @@ class CI_DB_query_builder extends CI_DB_driver
     {
         foreach ($this->whereIn as $params) {
             $this->builder->whereIn(...$params);
-        }
-    }
-
-    private function execWhereNotIn(): void
-    {
-        foreach ($this->whereIn as $params) {
-            $this->builder->whereNotIn(...$params);
         }
     }
 
