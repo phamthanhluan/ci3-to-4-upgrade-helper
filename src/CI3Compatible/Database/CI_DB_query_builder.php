@@ -630,6 +630,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->join = [];
         $this->where = [];
         $this->whereIn = [];
+        $this->whereNotIn = [];
         $this->like = [];
         $this->order_by = [];
     }
@@ -650,6 +651,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->join = [];
         $this->where = [];
         $this->whereIn = [];
+        $this->whereNotIn = [];
         $this->like = [];
         $this->order_by = [];
     }
