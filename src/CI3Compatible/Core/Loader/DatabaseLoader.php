@@ -33,7 +33,7 @@ class DatabaseLoader
         $this->injector = $injector;
     }
 
-    public function load($params = '', $return = false, $query_builder = null)
+    public function load($params = null, $return = false, $query_builder = null)
     {
         if (
             $return === false && $query_builder === null
