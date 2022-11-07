@@ -69,6 +69,10 @@ class CI_Controller extends BaseController
         LoggerInterface $logger
     ): void {
         parent::initController($request, $response, $logger);
+        // Preload any models, libraries, etc, here.
+
+        $this->initSmarty();
+        $this->initCheckAndAssign();
     }
 
     public static function &get_instance(): CI_Controller
