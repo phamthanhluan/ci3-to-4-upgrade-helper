@@ -179,7 +179,7 @@ class CI_Loader
      *                    FALSE on failure, CI_Loader instance in any other case
      */
     public function database(
-        $params = '',
+        $params = null,
         bool $return = false,
         ?bool $query_builder = null
     ) {

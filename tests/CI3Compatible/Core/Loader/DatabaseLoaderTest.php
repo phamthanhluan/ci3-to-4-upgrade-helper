@@ -50,8 +50,8 @@ class DatabaseLoaderTest extends TestCase
 
     public function test_load_database_two_instances(): void
     {
-        $db1 = $this->loader->load('', true);
-        $db2 = $this->loader->load('', true);
+        $db1 = $this->loader->load(null, true);
+        $db2 = $this->loader->load(null, true);
 
         $this->assertNotSame($db1, $db2);
         $this->assertInstanceOf(CI_DB::class, $db1);
