@@ -29,6 +29,9 @@ class CI_DB_query_builder extends CI_DB_driver
     private $where = [];
 
     /** @var array */
+    private $orWhere = [];
+
+    /** @var array */
     private $whereIn = [];
 
     /** @var array */
@@ -229,6 +232,25 @@ class CI_DB_query_builder extends CI_DB_driver
         return $this;
     }
 
+    /**
+     * WHERE
+     *
+     * Generates the WHERE portion of the query.
+     * Separates multiple calls with 'AND'.
+     *
+     * @param   mixed
+     * @param   mixed
+     * @param   bool
+     *
+     * @return  CI_DB_query_builder
+     */
+    public function or_where($key, $value = null, $escape = null): self
+    {
+        $this->orWhere[] = [$key, $value, $escape];
+
+        return $this;
+    }
+
 
     /**
      * WHERE
@@ -315,6 +337,7 @@ class CI_DB_query_builder extends CI_DB_driver
 
         $this->execJoin();
         $this->execWhere();
+        $this->execOrWhere();
         $this->execWhereIn();
         $this->execWhereNotIn();
         $this->execLike();
@@ -331,6 +354,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->execSet();
         $this->execJoin();
         $this->execWhere();
+        $this->execOrWhere();
         $this->execWhereIn();
         $this->execWhereNotIn();
         $this->execLike();
@@ -505,6 +529,7 @@ class CI_DB_query_builder extends CI_DB_driver
     {
         $this->existsBuilder();
         $this->execWhere();
+        $this->execOrWhere();
         $this->execWhereIn();
         $this->execLike();
     }
@@ -534,6 +559,13 @@ class CI_DB_query_builder extends CI_DB_driver
     {
         foreach ($this->where as $params) {
             $this->builder->where(...$params);
+        }
+    }
+
+    private function execOrWhere(): void
+    {
+        foreach ($this->orWhere as $params) {
+            $this->builder->orWhere(...$params);
         }
     }
 
