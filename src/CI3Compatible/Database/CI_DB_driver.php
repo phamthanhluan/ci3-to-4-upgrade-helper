@@ -261,4 +261,9 @@ class CI_DB_driver
     {
         return str_replace("'", "''", remove_invisible_characters($str));
     }
+
+    public function last_query(): string
+    {
+        return (string) $this->db->getLastQuery();
+    }
 }
