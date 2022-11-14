@@ -151,7 +151,7 @@ class CI_DB_query_builder extends CI_DB_driver
         return false;
     }
 
-    public function insert_string(string $table = '', array|object $set = null, ?bool $escape = null): bool
+    public function insert_string(string $table = '', array|object $set = null, ?bool $escape = null): string
     {
         $this->ensureQueryBuilder($table);
 
