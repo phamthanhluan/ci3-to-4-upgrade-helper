@@ -199,7 +199,7 @@ class CI_DB_query_builder extends CI_DB_driver
      *
      * @return  bool    TRUE on success, FALSE on failure
      */
-    public function update(string $table = '', ?array $set = null, $where = null, ?int $limit = null)
+    public function update(string $table = '', array|object $set = null, $where = null, ?int $limit = null)
     {
         $this->ensureQueryBuilder($table);
 
