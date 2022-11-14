@@ -34,4 +34,8 @@ class CI_DB extends CI_DB_query_builder
     {
         return $this->db->affectedRows();
     }
+
+    public function insert_string($data) {
+        return $this->db->set($data)->getCompiledInsert();
+    }
 }
