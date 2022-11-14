@@ -155,11 +155,10 @@ class CI_DB_query_builder extends CI_DB_driver
     {
         $this->ensureQueryBuilder($table);
 
-        $this->prepareInsertQuery();
         if(!is_array($set)) {
             $set = json_decode(json_encode($set), true);
         }
-        $ret = $this->builder->getCompiledInsert($set, $escape);
+        $ret = $this->builder->set($set)->getCompiledInsert();
 
         $this->_reset_write();
 
