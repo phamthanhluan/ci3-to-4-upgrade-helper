@@ -129,7 +129,7 @@ class CI_DB_query_builder extends CI_DB_driver
      *
      * @return  bool    TRUE on success, FALSE on failure
      */
-    public function insert(string $table = '', ?array $set = null, ?bool $escape = null): bool
+    public function insert(string $table = '', array|object $set = null, ?bool $escape = null): bool
     {
         $this->ensureQueryBuilder($table);
 
@@ -137,7 +137,9 @@ class CI_DB_query_builder extends CI_DB_driver
         $ret = $this->builder->insert($set, $escape);
 
         $this->_reset_write();
-
+        if(!is_array($set)) {
+            $set = json_decode(json_encode($set), true);
+        }
         if ($ret instanceof BaseResult) {
             return true;
         }
@@ -147,6 +149,21 @@ class CI_DB_query_builder extends CI_DB_driver
         }
 
         return false;
+    }
+
+    public function insert_string(string $table = '', array|object $set = null, ?bool $escape = null): bool
+    {
+        $this->ensureQueryBuilder($table);
+
+        $this->prepareInsertQuery();
+        if(!is_array($set)) {
+            $set = json_decode(json_encode($set), true);
+        }
+        $ret = $this->builder->getCompiledInsert($set, $escape);
+
+        $this->_reset_write();
+
+        return $ret;
     }
 
     /**
