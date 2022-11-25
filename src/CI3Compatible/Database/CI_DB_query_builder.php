@@ -60,6 +60,13 @@ class CI_DB_query_builder extends CI_DB_driver
 
     private $isDistinct = false;
 
+    private $groupAtStart = false;
+    private $groupStartAts = [];
+    private $groupEndAts = [];
+    private $orGroupStartAts = [];
+
+    private $condition = [];
+
     /**
      * Get
      *
@@ -243,7 +250,7 @@ class CI_DB_query_builder extends CI_DB_driver
      */
     public function where($key, $value = null, $escape = null): self
     {
-        $this->where[] = [$key, $value, $escape];
+        $this->condition[] = ['type' => 'where' , 'value' =>  [$key, $value, $escape]];
 
         return $this;
     }
@@ -262,8 +269,7 @@ class CI_DB_query_builder extends CI_DB_driver
      */
     public function or_where($key, $value = null, $escape = null): self
     {
-        $this->orWhere[] = [$key, $value, $escape];
-
+        $this->condition[] = ['type' => 'orWhere' , 'value' =>  [$key, $value, $escape]];
         return $this;
     }
 
@@ -282,15 +288,13 @@ class CI_DB_query_builder extends CI_DB_driver
      */
     public function where_in($key, $value = null, $escape = null): self
     {
-        $this->whereIn[] = [$key, $value, $escape];
-
+        $this->condition[] = ['type' => 'whereIn' , 'value' =>  [$key, $value, $escape]];
         return $this;
     }
 
     public function where_not_in($key, $value = null, $escape = null): self
     {
-        $this->whereNotIn[] = [$key, $value, $escape];
-
+        $this->condition[] = ['type' => 'whereNotIn' , 'value' =>  [$key, $value, $escape]];
         return $this;
     }
 
@@ -352,10 +356,7 @@ class CI_DB_query_builder extends CI_DB_driver
         }
 
         $this->execJoin();
-        $this->execWhere();
-        $this->execOrWhere();
-        $this->execWhereIn();
-        $this->execWhereNotIn();
+        $this->execCondition();
         $this->execLike();
 
         foreach ($this->order_by as $params) {
@@ -369,10 +370,7 @@ class CI_DB_query_builder extends CI_DB_driver
 
         $this->execSet();
         $this->execJoin();
-        $this->execWhere();
-        $this->execOrWhere();
-        $this->execWhereIn();
-        $this->execWhereNotIn();
+        $this->execCondition();
         $this->execLike();
     }
 
@@ -544,9 +542,7 @@ class CI_DB_query_builder extends CI_DB_driver
     private function prepareDeleteQuery(): void
     {
         $this->existsBuilder();
-        $this->execWhere();
-        $this->execOrWhere();
-        $this->execWhereIn();
+        $this->execCondition();
         $this->execLike();
     }
 
@@ -571,33 +567,13 @@ class CI_DB_query_builder extends CI_DB_driver
         }
     }
 
-    private function execWhere(): void
+    private function execCondition(): void
     {
-        foreach ($this->where as $params) {
-            $this->builder->where(...$params);
+        foreach ($this->condition as $params) {
+            $this->builder->{$params['type']}(...$params['value']);
         }
     }
 
-    private function execOrWhere(): void
-    {
-        foreach ($this->orWhere as $params) {
-            $this->builder->orWhere(...$params);
-        }
-    }
-
-    private function execWhereIn(): void
-    {
-        foreach ($this->whereIn as $params) {
-            $this->builder->whereIn(...$params);
-        }
-    }
-
-    private function execWhereNotIn(): void
-    {
-        foreach ($this->whereNotIn as $params) {
-            $this->builder->whereNotIn(...$params);
-        }
-    }
 
     private function execLike(): void
     {
@@ -676,11 +652,12 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->select = [];
         $this->from = [];
         $this->join = [];
-        $this->where = [];
-        $this->whereIn = [];
-        $this->whereNotIn = [];
+        $this->condition = [];
         $this->like = [];
         $this->order_by = [];
+        $this->isGroupStart = false;
+        $this->isGroupEnd = false;
+        $this->isOrGroupStart = false;
     }
 
     /**
@@ -697,9 +674,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->set = [];
         $this->from = [];
         $this->join = [];
-        $this->where = [];
-        $this->whereIn = [];
-        $this->whereNotIn = [];
+        $this->condition = [];
         $this->like = [];
         $this->order_by = [];
     }
@@ -750,6 +725,18 @@ class CI_DB_query_builder extends CI_DB_driver
 
     public function limit($limit = 1, $offset = 0) {
         $this->builder->limit($limit, $offset);
+    }
+
+    public function group_start() {
+        $this->condition[] = [ 'type' => 'groupStart', 'value' => []];
+    }
+
+    public function group_end() {
+        $this->condition[] = [ 'type' => 'groupEnd', 'value' => []];
+    }
+
+    public function or_group_start() {
+        $this->condition[] = [ 'type' => 'orGroupStart', 'value' => []];
     }
 
 }
