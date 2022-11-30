@@ -25,17 +25,9 @@ class CI_DB_query_builder extends CI_DB_driver
     /** @var ?BaseBuilder */
     private $builder;
 
-    /** @var array */
-    private $where = [];
 
     /** @var array */
-    private $orWhere = [];
-
-    /** @var array */
-    private $whereIn = [];
-
-    /** @var array */
-    private $whereNotIn = [];
+    private $group_by = [];
 
     /** @var array */
     private $order_by = [];
@@ -59,11 +51,6 @@ class CI_DB_query_builder extends CI_DB_driver
     private $select_sum = [];
 
     private $isDistinct = false;
-
-    private $groupAtStart = false;
-    private $groupStartAts = [];
-    private $groupEndAts = [];
-    private $orGroupStartAts = [];
 
     private $condition = [];
 
@@ -337,8 +324,11 @@ class CI_DB_query_builder extends CI_DB_driver
     }
 
     public function group_by($field) {
-        $this->builder->groupBy($field);
+        $this->group_by[] = $field;
+
     }
+
+
     public function distinct() {
         $this->isDistinct = true;
     }
@@ -358,7 +348,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->execJoin();
         $this->execCondition();
         $this->execLike();
-
+        $this->execGroupBy();
         foreach ($this->order_by as $params) {
             $this->builder->orderBy(...$params);
         }
@@ -367,11 +357,11 @@ class CI_DB_query_builder extends CI_DB_driver
     private function prepareUpdateQuery(): void
     {
         $this->existsBuilder();
-
         $this->execSet();
         $this->execJoin();
         $this->execCondition();
         $this->execLike();
+        $this->execGroupBy();
     }
 
     private function prepareInsertQuery()
@@ -544,6 +534,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->existsBuilder();
         $this->execCondition();
         $this->execLike();
+        $this->execGroupBy();
     }
 
     private function existsBuilder(): void
@@ -579,6 +570,13 @@ class CI_DB_query_builder extends CI_DB_driver
     {
         foreach ($this->like as $params) {
             $this->builder->like(...$params);
+        }
+    }
+
+    private function execGroupBy(): void
+    {
+        foreach ($this->group_by as $field) {
+            $this->builder->groupBy($field);
         }
     }
 
@@ -655,6 +653,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->condition = [];
         $this->like = [];
         $this->order_by = [];
+        $this->group_by = [];
         $this->isGroupStart = false;
         $this->isGroupEnd = false;
         $this->isOrGroupStart = false;
@@ -677,6 +676,7 @@ class CI_DB_query_builder extends CI_DB_driver
         $this->condition = [];
         $this->like = [];
         $this->order_by = [];
+        $this->group_by = [];
     }
 
     /**
