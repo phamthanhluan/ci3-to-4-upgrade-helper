@@ -323,9 +323,9 @@ class CI_DB_query_builder extends CI_DB_driver
         return $this;
     }
 
-    public function group_by($field) {
+    public function group_by($field): self {
         $this->group_by[] = $field;
-
+        return $this;
     }
 
 
