@@ -259,7 +259,7 @@ class CI_DB_driver
      */
     protected function _escape_str($str)
     {
-        return str_replace("'", "''", remove_invisible_characters($str));
+        return str_replace("'", "''", remove_invisible_characters($str ?? ""));
     }
 
     public function last_query(): string
