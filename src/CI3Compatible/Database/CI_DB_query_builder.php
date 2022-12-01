@@ -237,7 +237,7 @@ class CI_DB_query_builder extends CI_DB_driver
      */
     public function where($key, $value = null, $escape = null): self
     {
-        $this->condition[] = ['type' => 'where' , 'value' =>  [$key, $value, $escape]];
+        $this->condition[] = ['type' => 'where' , 'value' =>  [$key, (array)$value, $escape]];
 
         return $this;
     }
@@ -256,7 +256,7 @@ class CI_DB_query_builder extends CI_DB_driver
      */
     public function or_where($key, $value = null, $escape = null): self
     {
-        $this->condition[] = ['type' => 'orWhere' , 'value' =>  [$key, $value, $escape]];
+        $this->condition[] = ['type' => 'orWhere' , 'value' =>  [$key, (array)$value, $escape]];
         return $this;
     }
 
@@ -275,13 +275,13 @@ class CI_DB_query_builder extends CI_DB_driver
      */
     public function where_in($key, $value = null, $escape = null): self
     {
-        $this->condition[] = ['type' => 'whereIn' , 'value' =>  [$key, $value, $escape]];
+        $this->condition[] = ['type' => 'whereIn' , 'value' =>  [$key, (array)$value, $escape]];
         return $this;
     }
 
     public function where_not_in($key, $value = null, $escape = null): self
     {
-        $this->condition[] = ['type' => 'whereNotIn' , 'value' =>  [$key, $value, $escape]];
+        $this->condition[] = ['type' => 'whereNotIn' , 'value' =>  [$key, (array)$value, $escape]];
         return $this;
     }
 
