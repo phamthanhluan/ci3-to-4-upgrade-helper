@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Kenjis\CI3Compatible\Core;
 
+use Kenjis\CI3Compatible\Library\CI_Session;
 use function get_instance;
 
 class CI_Model
 {
+    protected $session;
     public function __construct()
     {
+        $this->session = new CI_Session();
     }
 
     public function __get($key)
