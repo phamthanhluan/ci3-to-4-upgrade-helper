@@ -206,6 +206,24 @@ class CI_DB_query_builder extends CI_DB_driver
     }
 
     /**
+     * @param string $table
+     * @param array|object|null $set
+     * @param string $index
+     * @return mixed
+     */
+    public function update_batch(string $table = '', array|object $set = null, string $index)
+    {
+        $this->ensureQueryBuilder($table);
+
+        $this->prepareUpdateQuery();
+        $ret = $this->builder->updateBatch($set, $index);
+
+        $this->_reset_write();
+
+        return $ret;
+    }
+
+    /**
      * The "set" function.
      *
      * Allows key/value pairs to be set for inserting or updating
