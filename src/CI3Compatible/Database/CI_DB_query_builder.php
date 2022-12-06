@@ -211,7 +211,7 @@ class CI_DB_query_builder extends CI_DB_driver
      * @param string $index
      * @return mixed
      */
-    public function update_batch(string $table = '', array|object $set = null, string $index)
+    public function update_batch(string $table = '', array|object $set = null, string $index='')
     {
         $this->ensureQueryBuilder($table);
 
