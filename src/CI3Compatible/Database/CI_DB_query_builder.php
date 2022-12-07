@@ -741,8 +741,9 @@ class CI_DB_query_builder extends CI_DB_driver
         return $this;
     }
 
-    public function limit($limit = 1, $offset = 0) {
+    public function limit($limit = 1, $offset = 0) : self{
         $this->builder->limit($limit, $offset);
+        return $this;
     }
 
     public function group_start() {
