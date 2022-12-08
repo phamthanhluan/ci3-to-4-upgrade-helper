@@ -757,5 +757,14 @@ class CI_DB_query_builder extends CI_DB_driver
     public function or_group_start() {
         $this->condition[] = [ 'type' => 'orGroupStart', 'value' => []];
     }
+    public function select_min(string $select = '', string $alias = ''):self {
+        $this->builder->selectMin($select, $alias);
+        return $this;
+    }
+
+    public function select_max(string $select = '', string $alias = ''):self {
+        $this->builder->selectMax($select, $alias);
+        return $this;
+    }
 
 }
