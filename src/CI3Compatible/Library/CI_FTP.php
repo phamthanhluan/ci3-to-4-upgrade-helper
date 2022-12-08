@@ -659,7 +659,7 @@ class CI_FTP {
 	 */
 	protected function _error($line)
 	{
-		show_error(lang($line));
+		show_error(lang('fpt_lang.'.$line));
 	}
 
 }
