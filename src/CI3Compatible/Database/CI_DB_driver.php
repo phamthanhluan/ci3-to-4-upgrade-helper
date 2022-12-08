@@ -227,7 +227,7 @@ class CI_DB_driver
      */
     public function escape_str($str)
     {
-         return $this->db->_escapeString($str);
+         return $this->db->escapeLikeStringDirect($str);
     }
 
 
