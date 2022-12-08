@@ -103,4 +103,8 @@ class CI_DB_result
     {
         return $this->result->getNumRows();
     }
+
+    public function first_row($type = 'object') {
+        return $this->result->getFirstRow($type);
+    }
 }
