@@ -141,6 +141,11 @@ class CI_Session
         $this->session->remove($key);
     }
 
+    public function all_userdata()
+    {
+        $this->session->get();
+    }
+
     /**
      * @param $key
      */
