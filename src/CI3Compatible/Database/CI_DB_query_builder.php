@@ -767,4 +767,19 @@ class CI_DB_query_builder extends CI_DB_driver
         return $this;
     }
 
+    public function having($key, $value )
+    {
+        $this->builder->having($key, $value);
+        return $this;
+    }
+
+    public function or_having($key, $value )
+    {
+        $this->builder->orHaving($key, $value);
+        return $this;
+    }
+
+
+
+
 }
